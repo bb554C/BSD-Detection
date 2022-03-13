@@ -11,8 +11,7 @@ normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
 input_image = Image.open("./test/18.jpg")
 preprocess = transforms.Compose([
     transforms.Resize(256),
-    transforms.CenterCrop(224), # RandomSizedCrop(224)??
-    transforms.RandomHorizontalFlip(),
+    transforms.CenterCrop(256), # RandomSizedCrop(224)??
     transforms.ToTensor(),
     normalize
     ])
@@ -35,7 +34,7 @@ print(probabilities)
 # Read the categories
 categories = ["cat","dog"]
 # Show top categories per image
-top5_prob, top5_catid = torch.topk(probabilities, 2)
+top1_prob, top1_id = torch.topk(probabilities, 1)
 for i in range(top5_prob.size(0)):
     print(categories[top5_catid[i]], top5_prob[i].item())
 
