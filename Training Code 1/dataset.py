@@ -26,25 +26,14 @@ class BSD(data.Dataset):
     else:
       self.imgs = imgs[int(0.7*len(imgs)):]
     if trans==None:
-      normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                        std=[0.229, 0.224, 0.225])
-      # test and dev dataset do not need to do data augemetation
-      """
-      if self.test or not self.train:
-        self.trans = transforms.Compose([
-                                        transforms.Resize(224),
-                                        transforms.CenterCrop(224),
-                                        transforms.ToTensor(),
-                                        normalize
-                                        ])
-      else:
-      """
+      #normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+      #                                  std=[0.229, 0.224, 0.225])
       self.trans = transforms.Compose([
                                         transforms.Resize(256),
                                         transforms.CenterCrop(256),
                                         #transforms.RandomHorizontalFlip(),
-                                        transforms.ToTensor(),
-                                        normalize
+                                        transforms.ToTensor()
+                                        #normalize
                                         ])
         
   def __getitem__(self, index):
