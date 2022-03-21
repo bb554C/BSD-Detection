@@ -27,10 +27,10 @@ def detect_image_class(model, pic):
 
 def update_image(directory, cam, model):
     stop = 1
-    imgName = "test.jpg"
-    imgPath = os.path.join(directory, imgName)
+    imgPath = BytesIO()
     while stop != 0:
-        cam.capture(imgPath)
+        camera.capture(imgPath, format='jpeg')
+        imgPath.seek(0)
         image_temp = Image.open(imgPath).convert('RGB')
         image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
         classification = detect_image_class(model, image_temp)
