@@ -1,20 +1,63 @@
 from PIL import Image, ImageTk
+from picamera import PiCamera
 import tkinter as tk
 import threading as thr
 import time
 
-def update_image():
-    for x in range(36):
-        path = str(x) + ".jpg"
+def detect_image_class(model, pic):
+    input_image = Image.open(pic)
+    box = input_image.getbbox()
+    if box[2] > box[3]:
+        preprocess = transforms.Compose([transforms.CenterCrop(box[3]),
+                                         transforms.Resize(size),
+                                         transforms.ToTensor()])
+    elif box[3] > box[2]:
+        preprocess = transforms.Compose([transforms.CenterCrop(box[2]),
+                                         transforms.Resize(size),
+                                         transforms.ToTensor()])
+    else:
+        preprocess = transforms.Compose([transforms.Resize(size),
+                                         transforms.ToTensor()])
+    input_tensor = preprocess(input_image)
+    input_batch = input_tensor.unsqueeze(0)
+    if torch.cuda.is_available():
+        input_batch = input_batch.to('cuda')
+        model.to('cuda')
+    else:
+        input_batch = input_batch.to('cpu')
+        model.to('cpu')
+    with torch.no_grad():
+        output = model(input_batch)
+    probabilities = torch.nn.functional.softmax(output[0], dim=0)
+    categories = ["Healthy", "BlackSigatoka", "Unkown"]
+    top_prob, top_id = torch.topk(probabilities, 1)
+    
+    return image, categories[top_id[0]]
+
+
+def update_image(cam, model):
+    stop = 1
+    directory = os.path.dirname(os.path.realpath(__file__))
+    imgName = "test.jpg"
+    imgPath = os.path.join(directory, imgName)
+    while stop != 0:
+        cam.capture(imgPath)
         image_temp = Image.open(path)
-        image_temp = image_temp.resize((250, 250), Image.ANTIALIAS)
-        img_display = ImageTk.PhotoImage(image_temp)
+        image_final , classification = detect_image_class(model, image_temp)
+        img_display = ImageTk.PhotoImage(image_final)
         canvas.itemconfig(image_canvas, image = img_display)
-        text_output.config(text = str(x))
-        time.sleep(0.5)
-        
+        text_output.config(text = classification)
+
 def multithread():
-    thread = thr.Thread(target=update_image)
+    #SetupCamera
+    camera = PiCamera()
+    camera.resolution = (1024, 1024)
+    #Setup Model
+    model = ShuffleNet2(2, 256, 2)
+    model.load_state_dict(torch.load(modelDir))
+    model.eval()
+    time.sleep(1)
+    thread = thr.Thread(target=update_image, args=(camera, model))
     thread.daemon = True
     thread.start()
     
@@ -24,11 +67,11 @@ def exit_app():
 if __name__ == '__main__':
     app = tk.Tk()
     app.attributes('-fullscreen', True)
-    canvas = tk.Canvas(app, width=250, height=250,bg='black')
+    canvas = tk.Canvas(app, width=256, height=256,bg='black')
     canvas.pack()
 
     image_temp = Image.open("2.jpg")
-    image_temp = image_temp.resize((250, 250), Image.ANTIALIAS)
+    image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
     img_display = ImageTk.PhotoImage(image_temp)
     image_canvas = canvas.create_image(0, 0, image = img_display, anchor = tk.NW)
     
