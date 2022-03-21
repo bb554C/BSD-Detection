@@ -36,7 +36,7 @@ def detect_image_class(model, pic):
     categories = ["Healthy", "BlackSigatoka", "Unkown"]
     top_prob, top_id = torch.topk(probabilities, 1)
     
-    return image, categories[top_id[0]]
+    return categories[top_id[0]]
 
 
 def update_image(directory, cam, model):
@@ -46,8 +46,9 @@ def update_image(directory, cam, model):
     while stop != 0:
         cam.capture(imgPath)
         image_temp = Image.open(imgPath).convert('RGB')
-        image_final , classification = detect_image_class(model, image_temp)
-        img_display = ImageTk.PhotoImage(image_final)
+        classification = detect_image_class(model, image_temp)
+        image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
+        img_display = ImageTk.PhotoImage(image_temp)
         canvas.itemconfig(image_canvas, image = img_display)
         text_output.config(text = classification)
 
