@@ -27,7 +27,7 @@ def detect_image_class(model, pic):
     return categories[top_id[0]]
 
 def update_GUI(image_display, classification):
-    canvas.itemconfig(image_canvas, image = img_display)
+    canvas.itemconfig(image_canvas, image = image_display)
     text_output.config(text = classification)
 
 def update_image(directory, cam, model):
