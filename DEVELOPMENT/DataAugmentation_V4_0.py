@@ -1,6 +1,5 @@
 import Augmentor
 import os
-import time
 import random
 import shutil
 from PIL import Image
