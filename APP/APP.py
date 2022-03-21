@@ -12,7 +12,7 @@ import torch
 
 
 def detect_image_class(model, pic):
-    preprocess = transforms.Compose(transforms.ToTensor()])
+    preprocess = transforms.Compose([transforms.ToTensor()])
     image = preprocess(pic)
     input_batch = image.unsqueeze(0)
     input_batch = input_batch.to('cpu')
