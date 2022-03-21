@@ -5,7 +5,6 @@ import threading as thr
 import time
 import os
 from ShuffleNet2 import ShuffleNet2
-ImageFile.LOAD_TRUNCATED_IMAGES = True
 from torchvision import transforms
 import torchvision
 import torch
