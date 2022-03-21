@@ -8,6 +8,7 @@ from ShuffleNet2 import ShuffleNet2
 from torchvision import transforms
 import torchvision
 import torch
+from io import BytesIO
 
 
 
