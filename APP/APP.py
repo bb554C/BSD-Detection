@@ -33,7 +33,7 @@ def update_GUI(image_temp, classification):
 def update_image(directory, cam, model):
     stop = 1
     while stop != 0:
-        for thread in threading.enumerate():
+        for thread in thr.enumerate():
             if thread.name == "DISPLAY":
                 print("waiting to join")
                 thread.join()
