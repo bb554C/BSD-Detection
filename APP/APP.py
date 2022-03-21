@@ -26,7 +26,7 @@ def detect_image_class(model, pic):
     top_prob, top_id = torch.topk(probabilities, 1) 
     return categories[top_id[0]]
 
-def update_GUI(image_temp):
+def update_GUI(image_temp, model):
     classification = detect_image_class(model, image_temp)
     img_display = ImageTk.PhotoImage(image_temp)
     canvas.itemconfig(image_canvas, image = img_display)
@@ -40,7 +40,7 @@ def update_image(directory, cam, model):
         imgPath.seek(0)
         image_temp = Image.open(imgPath).convert('RGB')
         image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
-        th1 = thr.Thread(target=update_GUI,args=(image_temp))
+        th1 = thr.Thread(target=update_GUI,args=(image_temp,model))
         th1.start()
 
 def multithread():
