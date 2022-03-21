@@ -30,7 +30,7 @@ def update_image(directory, cam, model):
     stop = 1
     imgPath = BytesIO()
     while stop != 0:
-        camera.capture(imgPath, format='jpeg')
+        cam.capture(imgPath, format='jpeg')
         imgPath.seek(0)
         image_temp = Image.open(imgPath).convert('RGB')
         image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
