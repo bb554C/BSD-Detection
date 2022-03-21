@@ -13,7 +13,8 @@ from io import BytesIO
 
 
 def detect_image_class(model, pic):
-    preprocess = transforms.Compose([transforms.ToTensor()])
+    preprocess = transforms.Compose([trasnforms.Resize(256),
+                                     transforms.ToTensor()])
     image = preprocess(pic)
     input_batch = image.unsqueeze(0)
     input_batch = input_batch.to('cpu')
@@ -25,6 +26,9 @@ def detect_image_class(model, pic):
     top_prob, top_id = torch.topk(probabilities, 1) 
     return categories[top_id[0]]
 
+def update_GUI(image_display, classification):
+    canvas.itemconfig(image_canvas, image = img_display)
+    text_output.config(text = classification)
 
 def update_image(directory, cam, model):
     stop = 1
@@ -36,8 +40,8 @@ def update_image(directory, cam, model):
         image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
         classification = detect_image_class(model, image_temp)
         img_display = ImageTk.PhotoImage(image_temp)
-        canvas.itemconfig(image_canvas, image = img_display)
-        text_output.config(text = classification)
+        th1 = thr.Thread(target=update_GUI,arge=(image_display, classification)
+        th1.start()
 
 def multithread():
     #Setup Directories
