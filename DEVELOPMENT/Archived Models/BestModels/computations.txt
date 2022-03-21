@@ -1,0 +1,13 @@
+MODEL NAME: BSD_Model_Best_RawResized.pkl
+Healthy - Correct: 466 Wrong: 3 Accuracy: 0.9936034115138592
+BSD - Correct: 482 Wrong: 29 Accuracy: 0.9432485322896281
+Total Accuracy: 0.9673469387755103
+Total Specificity: 0.9432485322896281
+Total Sensitivity: 0.9936034115138592
+MODEL NAME: BSD_Model_NextBest_RawResized.pkl
+Healthy - Correct: 469 Wrong: 0 Accuracy: 1.0
+BSD - Correct: 474 Wrong: 37 Accuracy: 0.9275929549902152
+Total Accuracy: 0.9622448979591837
+Total Specificity: 0.9275929549902152
+Total Sensitivity: 1.0
+BEST MODEL BSD_Model_Last32.pkl
