@@ -13,7 +13,7 @@ from io import BytesIO
 
 
 def detect_image_class(model, pic):
-    preprocess = transforms.Compose([trasnforms.Resize(256),
+    preprocess = transforms.Compose([transforms.Resize(256),
                                      transforms.ToTensor()])
     image = preprocess(pic)
     input_batch = image.unsqueeze(0)
