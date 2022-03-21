@@ -35,29 +35,34 @@ def detect_image_class(model, pic):
     return image, categories[top_id[0]]
 
 
-def update_image(cam, model):
+def update_image(directory, cam, model):
     stop = 1
-    directory = os.path.dirname(os.path.realpath(__file__))
     imgName = "test.jpg"
     imgPath = os.path.join(directory, imgName)
     while stop != 0:
         cam.capture(imgPath)
-        image_temp = Image.open(path)
+        image_temp = Image.open(imgPath)
         image_final , classification = detect_image_class(model, image_temp)
         img_display = ImageTk.PhotoImage(image_final)
         canvas.itemconfig(image_canvas, image = img_display)
         text_output.config(text = classification)
 
 def multithread():
+    #Setup Directories
+    directory = os.path.dirname(os.path.realpath(__file__))
+
     #SetupCamera
     camera = PiCamera()
     camera.resolution = (1024, 1024)
     #Setup Model
     model = ShuffleNet2(2, 256, 2)
-    model.load_state_dict(torch.load(modelDir))
+    for filename in os.listdir(directory):
+        if filename.endswith(".pkl"):
+            modelDir = os.path.join(directory, filename)
+            model.load_state_dict(torch.load(modelDir))
     model.eval()
     time.sleep(1)
-    thread = thr.Thread(target=update_image, args=(camera, model))
+    thread = thr.Thread(target=update_image, args=(directory, camera, model))
     thread.daemon = True
     thread.start()
     
