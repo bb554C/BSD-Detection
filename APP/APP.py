@@ -26,7 +26,7 @@ def detect_image_class(model, pic):
     else:
         preprocess = transforms.Compose([transforms.Resize(size),
                                          transforms.ToTensor()])
-    input_tensor = preprocess(input_image)
+    input_tensor = preprocess(pic)
     input_batch = input_tensor.unsqueeze(0)
     input_batch = input_batch.to('cpu')
     model.to('cpu')
