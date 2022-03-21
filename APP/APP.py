@@ -12,20 +12,7 @@ import torch
 
 
 def detect_image_class(model, pic):
-    #input_image = Image.open(pic).convert('RGB')
-    size = 256
-    box = pic.getbbox()
-    if box[2] > box[3]:
-        preprocess = transforms.Compose([transforms.CenterCrop(box[3]),
-                                         transforms.Resize(size),
-                                         transforms.ToTensor()])
-    elif box[3] > box[2]:
-        preprocess = transforms.Compose([transforms.CenterCrop(box[2]),
-                                         transforms.Resize(size),
-                                         transforms.ToTensor()])
-    else:
-        preprocess = transforms.Compose([transforms.Resize(size),
-                                         transforms.ToTensor()])
+    preprocess = transforms.Compose(transforms.ToTensor()])
     image = preprocess(pic)
     input_batch = image.unsqueeze(0)
     input_batch = input_batch.to('cpu')
@@ -34,8 +21,7 @@ def detect_image_class(model, pic):
         output = model(input_batch)
     probabilities = torch.nn.functional.softmax(output[0], dim=0)
     categories = ["Healthy", "BlackSigatoka", "Unkown"]
-    top_prob, top_id = torch.topk(probabilities, 1)
-    
+    top_prob, top_id = torch.topk(probabilities, 1) 
     return categories[top_id[0]]
 
 
@@ -46,8 +32,8 @@ def update_image(directory, cam, model):
     while stop != 0:
         cam.capture(imgPath)
         image_temp = Image.open(imgPath).convert('RGB')
-        classification = detect_image_class(model, image_temp)
         image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
+        classification = detect_image_class(model, image_temp)
         img_display = ImageTk.PhotoImage(image_temp)
         canvas.itemconfig(image_canvas, image = img_display)
         text_output.config(text = classification)
@@ -55,7 +41,6 @@ def update_image(directory, cam, model):
 def multithread():
     #Setup Directories
     directory = os.path.dirname(os.path.realpath(__file__))
-
     #SetupCamera
     camera = PiCamera()
     camera.resolution = (1024, 1024)
@@ -66,7 +51,6 @@ def multithread():
             modelDir = os.path.join(directory, filename)
             model.load_state_dict(torch.load(modelDir, map_location=torch.device('cpu')))
     model.eval()
-    time.sleep(1)
     thread = thr.Thread(target=update_image, args=(directory, camera, model))
     thread.daemon = True
     thread.start()
