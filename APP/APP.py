@@ -78,7 +78,7 @@ if __name__ == '__main__':
     canvas = tk.Canvas(app, width=256, height=256,bg='black')
     canvas.pack()
 
-    image_temp = Image.open("placeholder.jpg")
+    image_temp = Image.open("placeholder.jpg").convert('RGB')
     image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
     img_display = ImageTk.PhotoImage(image_temp)
     image_canvas = canvas.create_image(0, 0, image = img_display, anchor = tk.NW)
