@@ -40,7 +40,7 @@ def update_image(directory, cam, model):
         image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
         classification = detect_image_class(model, image_temp)
         img_display = ImageTk.PhotoImage(image_temp)
-        th1 = thr.Thread(target=update_GUI,arge=(img_display, classification))
+        th1 = thr.Thread(target=update_GUI,args=(img_display, classification))
         th1.start()
 
 def multithread():
