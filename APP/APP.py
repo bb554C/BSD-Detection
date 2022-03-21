@@ -12,8 +12,8 @@ import torch
 
 
 def detect_image_class(model, pic):
-    input_image = Image.open(pic).convert('RGB')
-    box = input_image.getbbox()
+    #input_image = Image.open(pic).convert('RGB')
+    box = pic.getbbox()
     if box[2] > box[3]:
         preprocess = transforms.Compose([transforms.CenterCrop(box[3]),
                                          transforms.Resize(size),
@@ -44,7 +44,7 @@ def update_image(directory, cam, model):
     imgPath = os.path.join(directory, imgName)
     while stop != 0:
         cam.capture(imgPath)
-        image_temp = Image.open(imgPath)
+        image_temp = Image.open(imgPath).convert('RGB')
         image_final , classification = detect_image_class(model, image_temp)
         img_display = ImageTk.PhotoImage(image_final)
         canvas.itemconfig(image_canvas, image = img_display)
