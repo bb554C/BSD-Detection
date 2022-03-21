@@ -35,12 +35,17 @@ def update_GUI(image_temp, model):
 def update_image(directory, cam, model):
     stop = 1
     while stop != 0:
+        for thread in threading.enumerate():
+            if thread.name == "DISPLAY":
+                print("waiting to join")
+                thread.join()
         imgPath = BytesIO()
         cam.capture(imgPath, format='jpeg')
         imgPath.seek(0)
         image_temp = Image.open(imgPath).convert('RGB')
         image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
         th1 = thr.Thread(target=update_GUI,args=(image_temp,model))
+        th1.name = "DISPLAY"
         th1.start()
 
 def multithread():
