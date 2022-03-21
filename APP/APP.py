@@ -28,12 +28,8 @@ def detect_image_class(model, pic):
                                          transforms.ToTensor()])
     input_tensor = preprocess(input_image)
     input_batch = input_tensor.unsqueeze(0)
-    if torch.cuda.is_available():
-        input_batch = input_batch.to('cuda')
-        model.to('cuda')
-    else:
-        input_batch = input_batch.to('cpu')
-        model.to('cpu')
+    input_batch = input_batch.to('cpu')
+    model.to('cpu')
     with torch.no_grad():
         output = model(input_batch)
     probabilities = torch.nn.functional.softmax(output[0], dim=0)
