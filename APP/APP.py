@@ -13,6 +13,7 @@ import torch
 
 def detect_image_class(model, pic):
     #input_image = Image.open(pic).convert('RGB')
+    size = 256
     box = pic.getbbox()
     if box[2] > box[3]:
         preprocess = transforms.Compose([transforms.CenterCrop(box[3]),
