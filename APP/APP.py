@@ -79,8 +79,10 @@ if __name__ == '__main__':
     app.attributes('-fullscreen', True)
     canvas = tk.Canvas(app, width=256, height=256,bg='black')
     canvas.pack()
-
-    image_temp = Image.open("placeholder.jpg").convert('RGB')
+    directory = os.path.dirname(os.path.realpath(__file__))
+    imgPath = os.path.join(directory, "placeholder.jpg")
+    
+    image_temp = Image.open(imgPath).convert('RGB')
     image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
     img_display = ImageTk.PhotoImage(image_temp)
     image_canvas = canvas.create_image(0, 0, image = img_display, anchor = tk.NW)
