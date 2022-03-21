@@ -3,6 +3,14 @@ from picamera import PiCamera
 import tkinter as tk
 import threading as thr
 import time
+import os
+from ShuffleNet2 import ShuffleNet2
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+from torchvision import transforms
+import torchvision
+import torch
+
+
 
 def detect_image_class(model, pic):
     input_image = Image.open(pic)
@@ -59,7 +67,7 @@ def multithread():
     for filename in os.listdir(directory):
         if filename.endswith(".pkl"):
             modelDir = os.path.join(directory, filename)
-            model.load_state_dict(torch.load(modelDir))
+            model.load_state_dict(torch.load(modelDir, map_location=torch.device('cpu')))
     model.eval()
     time.sleep(1)
     thread = thr.Thread(target=update_image, args=(directory, camera, model))
@@ -75,9 +83,9 @@ if __name__ == '__main__':
     canvas = tk.Canvas(app, width=256, height=256,bg='black')
     canvas.pack()
 
-    image_temp = Image.open("2.jpg")
-    image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
-    img_display = ImageTk.PhotoImage(image_temp)
+    #image_temp = Image.open("2.jpg")
+    #image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
+    #img_display = ImageTk.PhotoImage(image_temp)
     image_canvas = canvas.create_image(0, 0, image = img_display, anchor = tk.NW)
     
     text_output = tk.Label(app, text = "NONE")
