@@ -22,7 +22,7 @@ def detect_image_class(model, pic):
     with torch.no_grad():
         output = model(input_batch)
     probabilities = torch.nn.functional.softmax(output[0], dim=0)
-    categories = ["Healthy", "BlackSigatoka", "Unkown"]
+    categories = ["Healthy", "BlackSigatoka", "Unknown", "Unknown"]
     top_prob, top_id = torch.topk(probabilities, 1) 
     return categories[top_id[0]]
 
@@ -34,6 +34,7 @@ def update_image(directory, cam, model):
         imgPath.seek(0)
         image_temp = Image.open(imgPath).convert('RGB')
         image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
+        image_temp = image_temp.rotate(90)
         classification = detect_image_class(model, image_temp)
         img_display = ImageTk.PhotoImage(image_temp)
         canvas.itemconfig(image_canvas, image = img_display)

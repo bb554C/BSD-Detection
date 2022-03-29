@@ -56,10 +56,10 @@ def train_model(model, dataloaders, loss_fn, optimizer, num_epochs):
 if __name__ == '__main__':
     epochs = 50
     batchsize = 32
-    num_classes = 2
+    num_classes = 4
     input_size = 256
     net_type = 2
-    name = "RawResized"
+    name = "11K"
     trainfolder = "./train"
     pkl_path = "BSD_Model_"+ name +".pkl"
     dataloader = {}

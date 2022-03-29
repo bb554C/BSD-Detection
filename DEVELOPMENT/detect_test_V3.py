@@ -7,9 +7,10 @@ import torch
 from ShuffleNet2 import ShuffleNet2
 import os
 
-def detect_images(model, source, category):
-    count_right = 0
-    count_wrong = 0
+def detect_images(model, source):
+    count_Healthy = 0
+    count_BSD = 0
+    count_Unknown = 0
     size = 256
     for filename in os.listdir(source):
         try:
@@ -40,18 +41,17 @@ def detect_images(model, source, category):
                 output = model(input_batch)
             probabilities = torch.nn.functional.softmax(output[0], dim=0)
 
-            categories = ["Healthy", "BlackSigatoka", "Unkown"]
+            categories = ["Healthy", "BlackSigatoka", "Unknown"]
             top_prob, top_id = torch.topk(probabilities, 1)
-            if categories[top_id[0]] == category:
-                count_right = count_right + 1
-            else:
-                #print(filename)
-                #print(probabilities)
-                #print(categories[top_id[0]], top_prob[0].item())
-                count_wrong = count_wrong + 1
+            if top_id[0] == 0:
+                count_Healthy = count_Healthy + 1
+            elif top_id[0] == 1:
+                count_BSD = count_BSD + 1
+            elif top_id[0] == 2:
+                count_Unknown = count_Unknown + 1
         except:
             print("ERROR: cant process",filename)
-    return count_right, count_wrong
+    return count_Healthy, count_BSD, count_Unknown
 def countModel(directory):
     count = 0
     for filename in os.listdir(directory):
@@ -68,9 +68,9 @@ if __name__ == '__main__':
     modelFolder = os.path.join(directory, "Archived Models")
     BSD_folder = os.path.join(directory, test_folder,"BlackSigatoka") 
     Healthy_folder = os.path.join(directory, test_folder,"Healthy") 
-    #Unkown_folder = os.path.join(directory, test_folder,)
+    Unknown_folder = os.path.join(directory, test_folder, "Unknown")
     model_count = countModel(modelFolder)
-    while model_count > 2:
+    while model_count > 0:
         best_accuracy = 0
         worst_accuracy = 1
         most_accurate_model = ""
@@ -79,41 +79,68 @@ if __name__ == '__main__':
             if filename.endswith(".pkl"):
                 modelDir = os.path.join(modelFolder, filename)
                                    
-                model = ShuffleNet2(2, 256, 2)
+                model = ShuffleNet2(4, 256, 2)
                 model.load_state_dict(torch.load(modelDir))
                 model.eval()
 
-                count_healthy_right = 0
-                count_blackSigatoka_right = 0
-                count_Unkown_right = 0
-                
-                count_healthy_wrong = 0
-                count_blackSigatoka_wrong = 0
-                count_Unkown_wrong = 0
-                
-                count_healthy_right, count_healthy_wrong = detect_images(model, Healthy_folder, "Healthy")
-                count_blackSigatoka_right, count_blackSigatoka_wrong = detect_images(model, BSD_folder, "BlackSigatoka")
-                
-                Health_Total = count_healthy_right + count_healthy_wrong
-                BSD_Total = count_blackSigatoka_right + count_blackSigatoka_wrong
-                Healthy_Accuracy = count_healthy_right / Health_Total
-                BSD_Accuracy = count_blackSigatoka_right / BSD_Total
-                print("MODEL NAME:",filename)
-                print("Healthy - Correct:", count_healthy_right , "Wrong:", count_healthy_wrong, "Accuracy:", Healthy_Accuracy)
-                print("BSD - Correct:", count_blackSigatoka_right , "Wrong:", count_blackSigatoka_wrong, "Accuracy:", BSD_Accuracy)
+                Healthy = [0,0,0]
+                BSD = [0,0,0]
+                Unknown = [0,0,0]
 
-                Total_Accuracy = (count_healthy_right + count_blackSigatoka_right) / (Health_Total + BSD_Total)
+                Healthy = detect_images(model, Healthy_folder)
+                BSD = detect_images(model, BSD_folder)
+                Unknown = detect_images(model, Unknown_folder)
+                
+                print(Healthy)
+                print(BSD)
+                print(Unknown)
+                
+                Health_Total = Healthy[0] + Healthy[1] + Healthy[2]
+                BSD_Total = BSD[0] + BSD[1] + BSD[2]
+                Unknown_Total = Unknown[0] + Unknown[1] + Unknown[2]
+
+                Healthy_Accuracy = Healthy[0] / Health_Total
+                BSD_Accuracy = BSD[1] / BSD_Total
+                Unknown_Accuracy = Unknown[2] / Unknown_Total
+
+                Healthy_Specificity = (BSD[1] + BSD[2] + Unknown[1] + Unknown[2]) / (BSD_Total + Unknown_Total)
+                BSD_Specificity = (Healthy[0] + Healthy[2] + Unknown[0] + Unknown[2]) / (Health_Total + Unknown_Total)
+                Unknown_Specificity = (Healthy[0] + Healthy[1] + BSD[0] + BSD[1]) / (Health_Total + BSD_Total)
+
+                Healthy_Sensitivity = int(Healthy[0]) / Health_Total
+                BSD_Sensitivity = int(BSD[1]) / BSD_Total
+                Unknown_Sensitivity = int(Unknown[2]) / Unknown_Total
+                
+                print("MODEL NAME:",filename)
+                print("Healthy:", Healthy ,
+                      "Accuracy:", Healthy_Accuracy,
+                      "Specificity:", Healthy_Specificity,
+                      "Sensitivity", Healthy_Sensitivity)
+                
+                print("BSD:", BSD,
+                        "Accuracy:", BSD_Accuracy,
+                      "Specificity:", BSD_Specificity,
+                      "Sensitivity", BSD_Sensitivity)
+                
+                print("Unknown:", Unknown ,
+                      "Accuracy:", Unknown_Accuracy,
+                      "Specificity:", Unknown_Specificity,
+                      "Sensitivity", Unknown_Sensitivity)
+                
+                Total_Accuracy = (Healthy_Accuracy + BSD_Accuracy + Unknown_Accuracy) / 3
+                Total_Specificity = (Healthy_Specificity + BSD_Specificity + Unknown_Specificity) / 3
+                Total_Sensitivity = (Healthy_Sensitivity + BSD_Sensitivity + Unknown_Sensitivity) / 3
+
                 if best_accuracy < Total_Accuracy:
                     most_accurate_model = filename
                     best_accuracy = Total_Accuracy
                 if worst_accuracy > Total_Accuracy:
                     worst_model = filename
                     worst_accuracy = Total_Accuracy
-                print("Total Accuracy:",Total_Accuracy)
-                Total_Specificity = count_blackSigatoka_right / BSD_Total
-                print("Total Specificity:",Total_Specificity)
-                Total_Sensitivity = count_healthy_right / Health_Total
-                print("Total Sensitivity:",Total_Sensitivity)
+
+                print("Total Accuracy:", Total_Accuracy)
+                print("Total Specificity:", Total_Specificity)
+                print("Total Sensitivity:", Total_Sensitivity)
                 if Total_Accuracy < 0.90:
                     print("MODEL UNDER 90% ACCURACY",filename,"REMOVED")
                     os.remove(os.path.join(os.path.join(modelFolder,filename)))

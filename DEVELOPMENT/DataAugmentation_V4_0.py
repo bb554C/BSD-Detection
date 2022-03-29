@@ -93,9 +93,9 @@ def RenamingImages(source, destination, classification, maxsize):
                 
 if __name__ == '__main__':
 #User-Defined Variables
-    augment_folder = "Raw-BSD"
-    classification_name = "BlackSigatoka"
-    datasetgoal = 5000
+    augment_folder = "Background"
+    classification_name = "Background"
+    datasetgoal = 1000
     image_maxsize = 1024
     #Get current directory of python file
     directory = os.path.dirname(os.path.realpath(__file__))
