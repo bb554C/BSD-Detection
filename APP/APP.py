@@ -33,7 +33,7 @@ def update_image(directory, cam, model):
         cam.capture(imgPath, format='jpeg')
         imgPath.seek(0)
         image_temp = Image.open(imgPath).convert('RGB')
-        image_temp = image_temp.rotate(90)
+        #image_temp = image_temp.rotate(90)
         image_temp = image_temp.resize((256, 256), Image.ANTIALIAS)
         classification = detect_image_class(model, image_temp)
         img_display = ImageTk.PhotoImage(image_temp)
