@@ -95,7 +95,7 @@ if __name__ == '__main__':
 #User-Defined Variables
     augment_folder = "Background"
     classification_name = "Background"
-    datasetgoal = 1000
+    datasetgoal = 10000
     image_maxsize = 1024
     #Get current directory of python file
     directory = os.path.dirname(os.path.realpath(__file__))

@@ -39,15 +39,15 @@ class BSD(data.Dataset):
     else:
       kind = imgpath.split("/train\\")[-1]
       kind = kind.split(".")
-      if kind[0] == "BlackSigatoka":
-        label = 1
-        #print(kind[0], label)
-      elif kind[0] == "Healthy":
+      if kind[0] == "Healthy":
         label = 0
+      elif kind[0] == "BlackSigatoka":
+        label = 1
       elif kind[0] == "Unknown":
         label = 2
       elif kind[0] == "Background":
-        label = 2
+        label = 3
+      #print(kind[0], label)
       if kind[0] != "BlackSigatoka" and kind[0] != "Healthy" and kind[0] != "Unknown" and kind[0] != "Background":
         print("ERROR: Does not recognize the dataset. Please check directory path on dataset.py")
     img = Image.open(imgpath)

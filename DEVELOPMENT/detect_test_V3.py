@@ -15,7 +15,7 @@ def detect_images(model, source):
     for filename in os.listdir(source):
         try:
             pic = os.path.join(source,filename)
-            input_image = Image.open(pic)
+            input_image = Image.open(pic).convert('RGB')
             box = input_image.getbbox()
 
             if box[2] > box[3]:
@@ -41,16 +41,16 @@ def detect_images(model, source):
                 output = model(input_batch)
             probabilities = torch.nn.functional.softmax(output[0], dim=0)
 
-            categories = ["Healthy", "BlackSigatoka", "Unknown"]
+            categories = ["Healthy", "BlackSigatoka", "Unknown", "Unknown"]
             top_prob, top_id = torch.topk(probabilities, 1)
             if top_id[0] == 0:
                 count_Healthy = count_Healthy + 1
             elif top_id[0] == 1:
                 count_BSD = count_BSD + 1
-            elif top_id[0] == 2:
+            elif top_id[0] == 2 or top_id[0] == 3:
                 count_Unknown = count_Unknown + 1
         except:
-            print("ERROR: cant process",filename)
+            print("ERROR: cant process", filename)
     return count_Healthy, count_BSD, count_Unknown
 def countModel(directory):
     count = 0
@@ -61,16 +61,16 @@ def countModel(directory):
 
 if __name__ == '__main__':
     test_folder = "test"
-    num_classes = 2
+    num_classes = 4
     input_size = 256
     net_type = 2
     directory = os.path.dirname(os.path.realpath(__file__))
     modelFolder = os.path.join(directory, "Archived Models")
-    BSD_folder = os.path.join(directory, test_folder,"BlackSigatoka") 
-    Healthy_folder = os.path.join(directory, test_folder,"Healthy") 
+    BSD_folder = os.path.join(directory, test_folder, "BlackSigatoka") 
+    Healthy_folder = os.path.join(directory, test_folder, "Healthy") 
     Unknown_folder = os.path.join(directory, test_folder, "Unknown")
     model_count = countModel(modelFolder)
-    while model_count > 0:
+    while model_count > 2:
         best_accuracy = 0
         worst_accuracy = 1
         most_accurate_model = ""
@@ -78,8 +78,7 @@ if __name__ == '__main__':
         for filename in os.listdir(modelFolder):
             if filename.endswith(".pkl"):
                 modelDir = os.path.join(modelFolder, filename)
-                                   
-                model = ShuffleNet2(4, 256, 2)
+                model = ShuffleNet2(num_classes, input_size, net_type)
                 model.load_state_dict(torch.load(modelDir))
                 model.eval()
 
@@ -118,11 +117,11 @@ if __name__ == '__main__':
                       "Sensitivity", Healthy_Sensitivity)
                 
                 print("BSD:", BSD,
-                        "Accuracy:", BSD_Accuracy,
+                      "Accuracy:", BSD_Accuracy,
                       "Specificity:", BSD_Specificity,
                       "Sensitivity", BSD_Sensitivity)
                 
-                print("Unknown:", Unknown ,
+                print("Unknown:", Unknown,
                       "Accuracy:", Unknown_Accuracy,
                       "Specificity:", Unknown_Specificity,
                       "Sensitivity", Unknown_Sensitivity)
@@ -143,14 +142,14 @@ if __name__ == '__main__':
                 print("Total Sensitivity:", Total_Sensitivity)
                 if Total_Accuracy < 0.90:
                     print("MODEL UNDER 90% ACCURACY",filename,"REMOVED")
-                    os.remove(os.path.join(os.path.join(modelFolder,filename)))
+                    os.remove(os.path.join(os.path.join(modelFolder, filename)))
                     worst_accuracy = 100
                     worst_model = ""
         print("BEST MODEL",most_accurate_model)
         if worst_model != most_accurate_model:
             try:
-                os.remove(os.path.join(os.path.join(modelFolder,worst_model)))
-                print("WORST MODEL",worst_model,"REMOVED")
+                os.remove(os.path.join(os.path.join(modelFolder, worst_model)))
+                print("WORST MODEL", worst_model, "REMOVED")
             except:
                 print("File does not exist")
         model_count = countModel(modelFolder)

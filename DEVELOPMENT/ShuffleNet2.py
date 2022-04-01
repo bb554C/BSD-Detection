@@ -80,7 +80,6 @@ class ShuffleBlock(nn.Module):
   def forward(self, x):
     out = None
     if self.downsample:
-      # if it is downsampling, we don't need to do channel split
       out = t.cat((self.branch1(x), self.branch2(x)), 1)
     else:
       # channel split
@@ -93,10 +92,9 @@ class ShuffleBlock(nn.Module):
     
 
 class ShuffleNet2(nn.Module):
-  def __init__(self, num_classes=2, input_size=256, net_type=2):
+  def __init__(self, num_classes=4, input_size=256, net_type=2):
     super(ShuffleNet2, self).__init__()
-    assert input_size % 32 == 0 # 因为一共会下采样32倍
-    
+    assert input_size % 32 == 0
     
     self.stage_repeat_num = [4, 8, 4]
     if net_type == 0.5:

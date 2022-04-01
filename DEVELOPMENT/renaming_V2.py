@@ -39,13 +39,14 @@ def RenamingImages(source, destination, classification, maxsize):
                     img = img.resize((maxsize , maxsize))
                 rgb_im = img.convert('RGB')
                 rgb_im.save(os.path.join(destination,classification + "." + str(count) + ".jpg"))
+                os.remove(os.path.join(source, filename))
                 print("Produced: " + classification + "." + str(count) + ".jpg")
                 count = count + 1
     print("RENAMING END")
     
 if __name__ == '__main__':
-    augment_folder = "Raw-BSD"
-    classification_name = "testBSD"
+    augment_folder = "Unknown"
+    classification_name = "Unknown"
     image_maxsize = 1024
     
     #Get current directory of python file
