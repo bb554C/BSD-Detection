@@ -2,7 +2,7 @@ import os
 import shutil
 import random
 
-sourceFolder = "Background_Augmented_10.1K"
+sourceFolder = "Unknown_Augmented256"
 
 directory = os.path.dirname(os.path.realpath(__file__))
 source = os.path.join("D:\\","OneDrive - Mapúa University", "CPE200-2L_E01_Baguisi-Buenaventura", "Image Dataset", sourceFolder)

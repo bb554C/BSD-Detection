@@ -70,7 +70,7 @@ if __name__ == '__main__':
     Healthy_folder = os.path.join(directory, test_folder, "Healthy") 
     Unknown_folder = os.path.join(directory, test_folder, "Unknown")
     model_count = countModel(modelFolder)
-    while model_count > 2:
+    while model_count > 1:
         best_accuracy = 0
         worst_accuracy = 1
         most_accurate_model = ""
@@ -140,8 +140,8 @@ if __name__ == '__main__':
                 print("Total Accuracy:", Total_Accuracy)
                 print("Total Specificity:", Total_Specificity)
                 print("Total Sensitivity:", Total_Sensitivity)
-                if Total_Accuracy < 0.90:
-                    print("MODEL UNDER 90% ACCURACY",filename,"REMOVED")
+                if Total_Accuracy < 0.95:
+                    print("MODEL UNDER 95% ACCURACY",filename,"REMOVED")
                     os.remove(os.path.join(os.path.join(modelFolder, filename)))
                     worst_accuracy = 100
                     worst_model = ""

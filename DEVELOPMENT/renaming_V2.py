@@ -38,22 +38,22 @@ def RenamingImages(source, destination, classification, maxsize):
                 if box[2] > maxsize or box[3] > maxsize:
                     img = img.resize((maxsize , maxsize))
                 rgb_im = img.convert('RGB')
-                rgb_im.save(os.path.join(destination,classification + "." + str(count) + ".jpg"))
-                os.remove(os.path.join(source, filename))
-                print("Produced: " + classification + "." + str(count) + ".jpg")
+                rgb_im.save(os.path.join(destination,classification + "." + str(count).zfill(5) + ".jpg"))
+                #os.remove(os.path.join(source, filename))
+                print("Produced: " + classification + "." + str(count).zfill(5) + ".jpg")
                 count = count + 1
     print("RENAMING END")
     
 if __name__ == '__main__':
-    augment_folder = "Unknown"
-    classification_name = "Unknown"
-    image_maxsize = 1024
+    augment_folder = "BSD"
+    classification_name = "BlackSigatoka"
+    image_maxsize = 256
     
     #Get current directory of python file
     directory = os.path.dirname(os.path.realpath(__file__))
     
     SourceFolderDir = os.path.join(directory, augment_folder)
-    RenameFolderDir = os.path.join(directory, augment_folder + "_Renamed")
+    RenameFolderDir = os.path.join(directory, augment_folder + "_Resized" + str(image_maxsize))
     
     #Create Directories
     CreateDirectory(RenameFolderDir)

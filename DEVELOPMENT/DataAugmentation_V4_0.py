@@ -85,18 +85,18 @@ def RenamingImages(source, destination, classification, maxsize):
             if box[2] > maxsize or box[3] > maxsize:
                 img = img.resize((maxsize , maxsize))
             rgb_im = img.convert('RGB')
-            rgb_im.save(os.path.join(destination,classification + "." + str(count) + ".jpg"))
+            rgb_im.save(os.path.join(destination,classification + "." + str(count).zfill(5) + ".jpg"))
             os.remove(os.path.join(source, filename))
-            print("Produced: " + classification_name + "." + str(count) + ".jpg")
+            print("Produced: " + classification_name + "." + str(count).zfill(5) + ".jpg")
             count = count + 1
     print("RENAMING THREAD END")
                 
 if __name__ == '__main__':
 #User-Defined Variables
-    augment_folder = "Background"
-    classification_name = "Background"
-    datasetgoal = 10000
-    image_maxsize = 1024
+    augment_folder = "Unknown"
+    classification_name = augment_folder
+    datasetgoal = 5000
+    image_maxsize = 256
     #Get current directory of python file
     directory = os.path.dirname(os.path.realpath(__file__))
 
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     ProcessedFolderDir = os.path.join(directory, augment_folder + "_ProcessTEMP") #temp
     RenameFolderDir = os.path.join(directory, augment_folder + "_RenameTEMP") #temp
     AugmentorFolderDir = os.path.join(directory,augment_folder + "_AugmentTEMP","output") #temp
-    DestinationFolderDir = os.path.join(directory, augment_folder + "_Augmented")
+    DestinationFolderDir = os.path.join(directory, augment_folder + "_Augmented" + str(image_maxsize))
 
     #Create Directories
     CreateDirectory(AugmentFolderDir)

@@ -54,12 +54,12 @@ def train_model(model, dataloaders, loss_fn, optimizer, num_epochs):
     return model, val_acc_history
 
 if __name__ == '__main__':
-    epochs = 20
+    epochs = 50
     batchsize = 32
     num_classes = 4
     input_size = 256
     net_type = 2
-    name = "11K"
+    name = "4Class"
     trainfolder = "./train"
     pkl_path = "BSD_Model_"+ name +".pkl"
     dataloader = {}
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     model = ShuffleNet2(num_classes, input_size, net_type)
     model = model.to(device)
     loss_fn = nn.CrossEntropyLoss()
-    optimizer = t.optim.SGD(model.parameters(), lr=0.1, momentum=0.9)
+    optimizer = t.optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
     model, val_logs = train_model(model, dataloader, loss_fn, optimizer, epochs)
     t.save(model.state_dict(), pkl_path)
     print("Model saved to", pkl_path)

@@ -2,8 +2,8 @@ import os
 import shutil
 import random
 
-sourceFolder = "Raw-Unknown"
-trainFolder = "Unknown"
+sourceFolder = "Raw-BSD_Resized256"
+trainFolder = "BlackSigatoka"
 
 directory = os.path.dirname(os.path.realpath(__file__))
 source = os.path.join("D:\\","OneDrive - Mapúa University", "CPE200-2L_E01_Baguisi-Buenaventura", "Image Dataset", sourceFolder)
