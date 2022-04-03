@@ -47,7 +47,7 @@ def detect_images(model, source):
                 count_Healthy = count_Healthy + 1
             elif top_id[0] == 1:
                 count_BSD = count_BSD + 1
-            elif top_id[0] == 2 or top_id[0] == 3:
+            elif top_id[0] >= 2:
                 count_Unknown = count_Unknown + 1
         except:
             print("ERROR: cant process", filename)
@@ -61,7 +61,7 @@ def countModel(directory):
 
 if __name__ == '__main__':
     test_folder = "test"
-    num_classes = 4
+    num_classes = 3
     input_size = 256
     net_type = 2
     directory = os.path.dirname(os.path.realpath(__file__))

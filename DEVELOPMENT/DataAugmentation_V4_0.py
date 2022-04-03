@@ -127,7 +127,7 @@ if __name__ == '__main__':
         else:
             cur_file_limit = file_count_limit
         MoveImagesRandomLimited(SourceFolderDir, AugmentFolderDir, cur_file_limit, files)
-        AugmentorStart(AugmentFolderDir, cur_file_limit, 1, cur_file_limit)
+        AugmentorStart(AugmentFolderDir, cur_file_limit, multiplier, cur_file_limit)
         for thread in threading.enumerate():
             if thread.name == "RenamingThread":
                 print("waiting to join")
