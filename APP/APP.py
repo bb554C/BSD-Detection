@@ -47,7 +47,7 @@ def multithread():
     camera = PiCamera()
     camera.resolution = (1024, 1024)
     #Setup Model
-    model = ShuffleNet2(4, 256, 2)
+    model = ShuffleNet2(3, 256, 2)
     for filename in os.listdir(directory):
         if filename.endswith(".pkl"):
             modelDir = os.path.join(directory, filename)

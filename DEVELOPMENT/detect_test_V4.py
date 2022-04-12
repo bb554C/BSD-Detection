@@ -123,14 +123,14 @@ if __name__ == '__main__':
                   "Specificity:", Unknown_Specificity,
                   "Sensitivity", Unknown_Sensitivity)
             
-            Total_Accuracy = (Healthy_Accuracy + BSD_Accuracy + Unknown_Accuracy) / 3
-            Total_Specificity = (Healthy_Specificity + BSD_Specificity + Unknown_Specificity) / 3
-            Total_Sensitivity = (Healthy_Sensitivity + BSD_Sensitivity + Unknown_Sensitivity) / 3
+            Total_Accuracy = (Healthy_Accuracy + BSD_Accuracy) / 2
+            Total_Specificity = (Healthy_Specificity + BSD_Specificity) / 2
+            Total_Sensitivity = (Healthy_Sensitivity + BSD_Sensitivity ) / 2
 
             print("Total Accuracy:", Total_Accuracy)
             print("Total Specificity:", Total_Specificity)
             print("Total Sensitivity:", Total_Sensitivity)
-            if(Total_Accuracy < 0.95):
+            if(Total_Accuracy < 0.80):
                 os.remove(os.path.join(modelFolder, filename))
                 print("Removed:",filename)
             else:
@@ -140,7 +140,7 @@ if __name__ == '__main__':
             #print(modelAccArr)
 
     for i in range(len(modelAccArr)):
-        for j in range(0, len(modelAccArr) - i - 1):
+        for j in range(0, len(modelAccArr) - 2):
           if modelAccArr[j] > modelAccArr[j + 1]:
             temp = modelAccArr[j]
             modelAccArr[j] = modelAccArr[j+1]
@@ -151,7 +151,7 @@ if __name__ == '__main__':
         bestModelAcc = modelAccArr[len(modelAccArr)-1]
     print(modelNameArr)
     print(modelAccArr)
-    for i in range(len(modelAccArr)-1):
+    for i in range(len(modelAccArr)-2):
         try:
             if(modelAccArr[i] == 1.0 or modelAccArr[i] == bestModelAcc):
                 print("Can't Delete Accuracy 1.0")

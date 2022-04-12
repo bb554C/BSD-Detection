@@ -38,7 +38,7 @@ def train_model(model, dataloaders, loss_fn, optimizer, num_epochs):
             epoch_loss = running_loss / len(dataloaders[phase].dataset)
             epoch_acc = running_corrects / len(dataloaders[phase].dataset)
             print("Phase {} loss: {}, acc: {}".format(phase, epoch_loss, epoch_acc))
-            if phase == "val" and epoch_acc >= best_acc and epoch_loss <= best_loss:
+            if phase == "val" and epoch_acc >= best_acc:# and epoch_loss <= best_loss:
                 best_loss = epoch_loss
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
@@ -54,12 +54,12 @@ def train_model(model, dataloaders, loss_fn, optimizer, num_epochs):
     return model, val_acc_history
 
 if __name__ == '__main__':
-    epochs = 75
-    batchsize = 32
+    epochs = 500
+    batchsize = 56
     num_classes = 3
     input_size = 256
     net_type = 2
-    name = "Augmented"
+    name = "NonAugmented"
     trainfolder = "./train"
     pkl_path = "BSD_Model_3C_"+ name +".pkl"
     dataloader = {}

@@ -28,6 +28,8 @@ class BSD(data.Dataset):
     if trans==None:
       self.trans = transforms.Compose([
                                         transforms.Resize(256),
+                                        transforms.RandomHorizontalFlip(0.5),
+                                        transforms.RandomVerticalFlip(0.5),
                                         transforms.ToTensor()
                                         ])
         
@@ -43,10 +45,10 @@ class BSD(data.Dataset):
         label = 0
       elif kind[0] == "BlackSigatoka":
         label = 1
-      elif kind[0] == "Background":
+      elif kind[0] == "Unknown":
         label = 2
       #print(kind[0], label)
-      if kind[0] != "BlackSigatoka" and kind[0] != "Healthy" and kind[0] != "Background":
+      if kind[0] != "BlackSigatoka" and kind[0] != "Healthy" and kind[0] != "Unknown":
         print("ERROR: Does not recognize the dataset. Please check directory path on dataset.py")
     img = Image.open(imgpath)
     img = self.trans(img)

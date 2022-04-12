@@ -92,7 +92,7 @@ class ShuffleBlock(nn.Module):
     
 
 class ShuffleNet2(nn.Module):
-  def __init__(self, num_classes=4, input_size=256, net_type=2):
+  def __init__(self, num_classes=3, input_size=512, net_type=2):
     super(ShuffleNet2, self).__init__()
     assert input_size % 32 == 0
     
