@@ -153,7 +153,7 @@ if __name__ == '__main__':
     print(modelAccArr)
     for i in range(len(modelAccArr)-2):
         try:
-            if(modelAccArr[i] == 1.0 or modelAccArr[i] == bestModelAcc):
+            if(modelAccArr[i] >= 0.95 or modelAccArr[i] == bestModelAcc):
                 print("Can't Delete Accuracy 1.0")
             else:
                 os.remove(os.path.join(modelFolder, modelNameArr[i]))
