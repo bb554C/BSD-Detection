@@ -58,8 +58,8 @@ def RenamingImages(source, destination, classification, maxsize,pad):
 
     
 if __name__ == '__main__':
-    augment_folder = "Raw-BSD_Resized256"
-    classification_name = "BlackSigatoka"
+    augment_folder = "Raw-Background_Resized512"
+    classification_name = "Unknown"
     image_maxsize = 256
     pad = 0
     

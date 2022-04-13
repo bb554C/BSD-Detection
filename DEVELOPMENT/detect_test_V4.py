@@ -124,8 +124,8 @@ if __name__ == '__main__':
                   "Sensitivity", Unknown_Sensitivity)
             
             Total_Accuracy = (Healthy_Accuracy + BSD_Accuracy) / 2
-            Total_Specificity = (Healthy_Specificity + BSD_Specificity) / 2
-            Total_Sensitivity = (Healthy_Sensitivity + BSD_Sensitivity ) / 2
+            Total_Specificity = (Healthy_Specificity + BSD_Specificity ) / 2
+            Total_Sensitivity = (Healthy_Sensitivity + BSD_Sensitivity) / 2
 
             print("Total Accuracy:", Total_Accuracy)
             print("Total Specificity:", Total_Specificity)
@@ -153,11 +153,11 @@ if __name__ == '__main__':
     print(modelAccArr)
     for i in range(len(modelAccArr)-2):
         try:
-            if(modelAccArr[i] >= 0.95 or modelAccArr[i] == bestModelAcc):
-                print("Can't Delete Accuracy 1.0")
-            else:
-                os.remove(os.path.join(modelFolder, modelNameArr[i]))
-                print("Removed:",modelNameArr[i])
+            if(modelAccArr[i] >= 0.98 or modelAccArr[i] == bestModelAcc):
+                print("Can't Delete Accuracy > 0.98")
+            #else:
+                #os.remove(os.path.join(modelFolder, modelNameArr[i]))
+                #print("Removed:",modelNameArr[i])
         except:
           print("File Already Deleted")
 
