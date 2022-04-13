@@ -28,8 +28,8 @@ class BSD(data.Dataset):
     if trans==None:
       self.trans = transforms.Compose([
                                         transforms.Resize(256),
-                                        transforms.RandomHorizontalFlip(0.5),
-                                        transforms.RandomVerticalFlip(0.5),
+                                        transforms.RandomHorizontalFlip(),
+                                        transforms.RandomVerticalFlip(),
                                         transforms.ToTensor()
                                         ])
         

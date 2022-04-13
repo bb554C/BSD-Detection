@@ -54,7 +54,7 @@ def train_model(model, dataloaders, loss_fn, optimizer, num_epochs):
     return model, val_acc_history
 
 if __name__ == '__main__':
-    epochs = 750
+    epochs = 200
     batchsize = 56
     num_classes = 3
     input_size = 256

@@ -130,7 +130,7 @@ if __name__ == '__main__':
             print("Total Accuracy:", Total_Accuracy)
             print("Total Specificity:", Total_Specificity)
             print("Total Sensitivity:", Total_Sensitivity)
-            if(Total_Accuracy < 0.95):
+            if(Total_Accuracy < 0.93):
                 os.remove(os.path.join(modelFolder, filename))
                 print("Removed:",filename)
             else:

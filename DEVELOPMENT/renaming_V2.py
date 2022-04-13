@@ -58,10 +58,10 @@ def RenamingImages(source, destination, classification, maxsize,pad):
 
     
 if __name__ == '__main__':
-    augment_folder = "Raw-Background_Resized512"
-    classification_name = "Unknown"
+    augment_folder = "Healthy"
+    classification_name = "Healthy"
     image_maxsize = 256
-    pad = 0
+    pad = 1
     
     #Get current directory of python file
     directory = os.path.dirname(os.path.realpath(__file__))
