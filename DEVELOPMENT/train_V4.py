@@ -38,13 +38,13 @@ def train_model(model, dataloaders, loss_fn, optimizer, num_epochs):
             epoch_loss = running_loss / len(dataloaders[phase].dataset)
             epoch_acc = running_corrects / len(dataloaders[phase].dataset)
             print("Phase {} loss: {}, acc: {}".format(phase, epoch_loss, epoch_acc))
-            if phase == "val" and epoch_acc >= best_acc:# and epoch_loss <= best_loss:
+            if phase == "val" and epoch_acc >= best_acc:
                 best_loss = epoch_loss
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
                 model.load_state_dict(best_model_wts)
                 bes_count = bes_count + 1
-                t.save(model.state_dict(), "BSD_Model_3NC_Last" + str(count).zfill(3) + "_Augmented.pkl")
+                t.save(model.state_dict(), "BSD_Model_3NAC_Last" + str(count).zfill(3) + "_Augmented.pkl")
                 print("Best model Accuracy:", best_acc)
             if phase == "val":
                 count = count + 1
@@ -54,14 +54,14 @@ def train_model(model, dataloaders, loss_fn, optimizer, num_epochs):
     return model, val_acc_history
 
 if __name__ == '__main__':
-    epochs = 200
+    epochs = 1000
     batchsize = 56
     num_classes = 3
     input_size = 256
     net_type = 2
     name = "NonAugmented"
     trainfolder = "./train"
-    pkl_path = "BSD_Model_3NC_"+ name +".pkl"
+    pkl_path = "BSD_Model_3NAC_"+ name +".pkl"
     dataloader = {}
     train_dataset = BSD(trainfolder, train=True)
     train_loader = data.DataLoader(train_dataset, batch_size = batchsize, shuffle=True)
