@@ -124,13 +124,14 @@ if __name__ == '__main__':
                   "Sensitivity", Unknown_Sensitivity)
             
             Total_Accuracy = (Healthy_Accuracy + BSD_Accuracy + Unknown_Accuracy) / 3
+            #Total_Accuracy = (Healthy_Accuracy + BSD_Accuracy) / 2
             Total_Specificity = (Healthy_Specificity + BSD_Specificity ) / 2
             Total_Sensitivity = (Healthy_Sensitivity + BSD_Sensitivity) / 2
 
             print("Total Accuracy:", Total_Accuracy)
             print("Total Specificity:", Total_Specificity)
             print("Total Sensitivity:", Total_Sensitivity)
-            if(Total_Accuracy < 0.82):
+            if(Total_Accuracy < 0.663):
                 os.remove(os.path.join(modelFolder, filename))
                 print("Removed:",filename)
             else:

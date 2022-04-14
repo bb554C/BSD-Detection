@@ -1,3 +1,4 @@
+
 import argparse
 from dataset_V4 import BSD
 from ShuffleNet2 import ShuffleNet2
@@ -10,8 +11,8 @@ import numpy as np
 
 def train_model(model, dataloaders, loss_fn, optimizer, num_epochs):
     best_model_wts = copy.deepcopy(model.state_dict())
-    best_acc = 0.
-    best_loss = 100
+    best_acc = 0
+    best_loss = 1
     bes_count = 0
     count = 0
     val_acc_history = []
@@ -38,7 +39,7 @@ def train_model(model, dataloaders, loss_fn, optimizer, num_epochs):
             epoch_loss = running_loss / len(dataloaders[phase].dataset)
             epoch_acc = running_corrects / len(dataloaders[phase].dataset)
             print("Phase {} loss: {}, acc: {}".format(phase, epoch_loss, epoch_acc))
-            if phase == "val" and epoch_acc >= best_acc:
+            if phase == "val" and epoch_acc >= best_acc and epoch_loss <= best_loss:
                 best_loss = epoch_loss
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
@@ -54,7 +55,7 @@ def train_model(model, dataloaders, loss_fn, optimizer, num_epochs):
     return model, val_acc_history
 
 if __name__ == '__main__':
-    epochs = 1000
+    epochs = 150
     batchsize = 56
     num_classes = 3
     input_size = 256
