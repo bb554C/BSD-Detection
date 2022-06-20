@@ -58,16 +58,19 @@ def RenamingImages(source, destination, classification, maxsize,pad):
 
     
 if __name__ == '__main__':
-    augment_folder = "Healthy"
+    augment_folder = "Raw-Healthy"
     classification_name = "Healthy"
-    image_maxsize = 256
-    pad = 1
+    image_maxsize = 2048
+    pad = 0
     
     #Get current directory of python file
     directory = os.path.dirname(os.path.realpath(__file__))
     
     SourceFolderDir = os.path.join(directory, augment_folder)
-    RenameFolderDir = os.path.join(directory, augment_folder + "_Resized" + str(image_maxsize))
+    if(pad == 0):
+        RenameFolderDir = os.path.join(directory, augment_folder + "_Resized" + str(image_maxsize))
+    else:
+        RenameFolderDir = os.path.join(directory, augment_folder + "_Resized" + str(image_maxsize) + "_Padded")
     
     #Create Directories
     CreateDirectory(RenameFolderDir)

@@ -13,8 +13,6 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 #This code allows us to augmetn the image dataset in batches.
 #This reduces the issues of computer crashing when augmenting large images and large datasets
 
-
-
 def CreateDirectory(dir):
     try:
         os.mkdir(dir)
