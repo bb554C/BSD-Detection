@@ -53,9 +53,9 @@ def RenamingImages(source, destination, classification, maxsize,pad):
 
     
 if __name__ == '__main__':
-    augment_folder = "Orig-Black Sigatoka-B"
-    classification_name = "Black Sigatoka"
-    image_maxsize = 1664
+    augment_folder = "Orig-Healthy-B"
+    classification_name = "Healthy"
+    image_maxsize = 1793
     pad = 0
     
     #Get current directory of python file
